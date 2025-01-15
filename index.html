@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template-2-hfff-coffee</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <!-- Fonts-Abhaya libre -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Akaya+Telivigala&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Fonts-Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- roboto mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- fa-icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+
+    <!-- AlpineJS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="navbar-logo">hfff <span>coffee</span></a>
+      <div class="navbar-nav">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="navbar-ekstra">
+        <a href="#" id="menu-icon"><i class="fa-solid fa-bars"></i></a>
+      </div>
+    </nav>
+
+    <section class="hero" id="home">
+      <!-- <div class="layer-bg"></div> -->
+      <main class="content">
+        <h2>Simply Clever</h2>
+        <h1>Best Coffee</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto,
+          quidem!
+        </p>
+      </main>
+      <a href="#menu"><i class="fa-solid fa-arrow-down"></i></a>
+    </section>
+
+    <section class="menu" id="menu" x-data="menuFilter">
+      <h1>Our Menu</h1>
+      <!-- Filter Buttons -->
+      <div class="filter-category">
+        <button
+          :class="{'active': selectedCategory === 'all'}"
+          @click="filter('all')"
+        >
+          All
+        </button>
+        <button
+          :class="{'active': selectedCategory === 'coffee'}"
+          @click="filter('coffee')"
+        >
+        <i class="fa-solid fa-mug-hot"></i> Coffee
+        </button>
+        <button
+          :class="{'active': selectedCategory === 'ricebowl'}"
+          @click="filter('ricebowl')"
+        ><i class="fa-solid fa-bowl-rice"></i> Rice Bowl
+        </button>
+        <button
+          :class="{'active': selectedCategory === 'mocktail'}"
+          @click="filter('mocktail')"
+        >
+        <i class="fa-solid fa-martini-glass-citrus"></i> Mocktail
+        </button>
+      </div>
+      <!-- Menu Items -->
+      <div class="container">
+        <template x-for="(items, category) in groupedMenu" :key="category">
+          <div class="category-group">
+            <h2
+              x-text="category.charAt(0).toUpperCase() + category.slice(1)"
+            ></h2>
+            <div class="menu-container">
+              <template x-for="(item, index) in items" :key="item.id">
+                <a
+                  href="#"
+                  class="menu-card"
+                  @click.prevent="openModal(item)"
+                  x-init="initLazyLoad()"
+                >
+                  <img
+                    :data-src="`img/menu/${item.img}`"
+                    :alt="item.name"
+                    class="menu-img lazy"
+                  />
+                  <div class="menu-description">
+                    <div class="menu-description1">
+                      <h3 x-text="item.name" class="item-name"></h3>
+                      <p x-text="`${item.price}k`" class="item-price"></p>
+                    </div>
+                    <img src="img/qrcode.png" alt="" class="icon-img" />
+                  </div>
+                </a>
+              </template>
+            </div>
+          </div>
+        </template>
+      </div>
+      <!-- Modal-box -->
+      <div class="modal" x-show="isModalOpen" @click.self="closeModal">
+        <div class="modal-box" id="modal-box">
+          <a href="#" class="close-modal" @click.prevent="closeModal"
+            ><i class="fa-solid fa-arrow-down"></i
+          ></a>
+          <img
+            :src="modalItem ? `img/menu/${modalItem.img}` : ''"
+            :alt="modalItem?.name"
+          />
+          <div class="menu-desc-modal">
+            <h2 class="menu-title-modal" x-text="modalItem?.name"></h2>
+            <h3>About</h3>
+            <p class="desc-product" x-text="modalItem?.description"></p>
+            <p class="desc-price" x-text="`${modalItem?.price}k`"></p>
+            <p x-text="modalItem?.nutrition" class="nutrition"></p>
+          </div>
+        </div>
+      </div>
+      <!-- Modal-box -->
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>
